@@ -1,1 +1,1 @@
-bash decode.sh 0 tmp tmp_oneline_neuro.txt
+python blip2_example_ipdb.py
