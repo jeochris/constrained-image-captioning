@@ -1,0 +1,61 @@
+main -> fx(image_path='./image/baseball.jpg')
+prompt = "Question: What is the catcher in the photo wearing? Answer:"
+num_beams = 20
+const_list = [" helmet", " red"]
+constraints_list = [[[" helmet"], [" red"]]]
+
+original generate function without constraint: it's called a catcher's mask, and it's used to protect the catcher's face from
+original generate function with constraint: it's the catcher's mask, which is used to protect the catcher's face from helmet red
+new generate function with constraint: It's a baseball helmet
+
+
+
+main -> fx(image_path='./image/baseball.jpg')
+prompt = "Question: What is the catcher in the photo wearing? Answer:"
+num_beams = 20
+const_list = [" red"]
+constraints_list = [[[" red"]]]
+
+original generate function without constraint: it's called a catcher's mask, and it's used to protect the catcher's face from
+original generate function with constraint: he's wearing a catcher's mask, which is used to protect the catcher's eyes from red
+new generate function with constraint: It's a mask
+
+
+
+main -> fx(image_path='./image/baseball.jpg')
+prompt = "Question: What is the catcher in the photo wearing? Answer:"
+num_beams = 20
+const_list = [" nike"]
+constraints_list = [[[" nike"]]]
+
+original generate function without constraint: it's called a catcher's mask, and it's used to protect the catcher's face from
+original generate function with constraint: it's a catcher's mitt, which is used to protect the catcher's hands from n
+new generate function with constraint: It's a baseball
+
+
+
+main -> fx(image_path='./image/baseball.jpg')
+prompt = "Question: What is the catcher in the photo wearing? Answer:"
+num_beams = 20
+const_list = [" red", " color"]
+constraints_list = [[[" color"], [" red"]]]
+
+original generate function without constraint: it's called a catcher's mask, and it's used to protect the catcher's face from
+original generate function with constraint: it's a catcher's mitt, which is used to catch the ball, and red color
+new generate function with constraint: It's a mask
+
+
+
+
+min_length -> 16
+
+main -> fx(image_path='./image/parasite.png')
+no prompt
+num_beams = 20
+const_list = [" phone"]
+constraints_list = [[[" black", " color"], [" phone"]]]
+
+original generate function without constraint: a young man and woman looking at their cell phones
+original generate function with constraint: a young man and woman looking at their cell phone
+new generate function with constraint: a man and an asian couple looking at home alone woman holding cell phone
+
