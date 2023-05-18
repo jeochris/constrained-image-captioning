@@ -54,7 +54,7 @@ class Runner:
         print('original generate function without constraint:', generated_text_2)
         res1 = generated_text_2
 
-        const_list = [" camera"]
+        const_list = [" remote control"]
         force_words_ids = []
         for word in const_list:
             force_words_ids.append(self.processor.tokenizer.convert_tokens_to_ids(self.processor.tokenizer.tokenize(word))[0])
@@ -84,7 +84,8 @@ class Runner:
                 return token_ids, True
             return [[list(map(tokenize2, clause)) for clause in ct] for ct in raw_cts]
         
-        constraints_list = [[[" camera"]]] # 앞에 띄어쓰기!
+        constraints_list = [[[" pink"], [" cat"]]] # 앞에 띄어쓰기!
+        #constraints_list = [[[" game", " games"], [" league"], [" exciting", " exicted"]]]
         constraints_list = tokenize_constraints_chk(self.processor.tokenizer, constraints_list)
         #print(constraints_list)
 
@@ -102,4 +103,4 @@ class Runner:
 if __name__ == "__main__":
     fx = Runner()
     #import ipdb; ipdb.set_trace()
-    res1, res2, res3 = fx(image_path='./image/objects.png')
+    res1, res2, res3 = fx(image_path='./image/cat.jpg')
