@@ -2,7 +2,7 @@
 
 Software Capstone Design (1)
 
-Team MMM (Multimodal Mavens) : 전재현, 김정주, 서원준<br>
+Team MMM (Multimodal Mavens) : Jaehyun Jeon, 김정주, Wonjoon Seo<br>
 Advisor : Youngjae Yu<br>
 Assistant : Jiwan Chung
 
