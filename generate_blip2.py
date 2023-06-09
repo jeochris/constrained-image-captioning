@@ -65,9 +65,6 @@ def generate_blip2(
         attention_mask=attention_mask, # original func is until here
         max_length=64,
         min_length=16,
-        num_beams=20,
-        no_repeat_ngram_size=3,
-        length_penalty=0.5,
         prune_factor=50,
         sat_tolerance=2,
         beta=0,

@@ -5,6 +5,8 @@ import torch
 
 from generate_blip2 import generate_blip2
 from lexical_constraints import init_batch
+import warnings
+warnings.filterwarnings('ignore')
 
 # import logging
 
@@ -36,39 +38,49 @@ class Runner:
         self.device = device
         self.processor = processor
         self.model = model
-    #model.to(device)
 
-    #url = "http://images.cocodataset.org/val2017/000000039769.jpg"
-    #image = Image.open(requests.get(url, stream=True).raw)
     def __call__(self, image_path: str = './image/mir.png'):
         image = Image.open(image_path)
 
-        #prompt = "Question: What is the man looking at? Answer:"
         inputs = self.processor(images=image, return_tensors="pt").to(self.device, torch.float16)
 
-    # logger.info('inputs')
-    # logger.info(inputs)
+        # 공통 config 설정
+        inputs['num_beams'] = 20
+        inputs['no_repeat_ngram_size'] = 3
+        inputs['length_penalty'] = 0.5
 
-        generated_ids_2 = self.model.generate(**inputs, num_beams=20)
+
+        # 실험1
+        generated_ids_2 = self.model.generate(**inputs)
         generated_text_2 = self.processor.batch_decode(generated_ids_2, skip_special_tokens=True)[0].strip()
         print('original generate function without constraint:', generated_text_2)
         res1 = generated_text_2
 
-        const_list = [" remote control"]
+        # 실험2
+        const_list = [" woman"]
+        bad_list = [" man"]
         force_words_ids = []
+        bad_words_ids = []
         for word in const_list:
             force_words_ids.append(self.processor.tokenizer.convert_tokens_to_ids(self.processor.tokenizer.tokenize(word))[0])
         #print(force_words_ids)
         inputs['force_words_ids'] = [force_words_ids]
         #print(processor.tokenizer.convert_ids_to_tokens([560, 34046, 17283]))
 
-        generated_ids = self.model.generate(**inputs, num_beams=20)
+        for word in bad_list:
+            bad_words_ids.append(self.processor.tokenizer.convert_tokens_to_ids(self.processor.tokenizer.tokenize(word))[0])
+        
+        print(bad_words_ids)
+        inputs['bad_words_ids'] = [[[313, 2828]]]
+        #print(processor.tokenizer.convert_ids_to_tokens([560, 34046, 17283]))
+
+        """generated_ids = self.model.generate(**inputs)
         generated_text = self.processor.batch_decode(generated_ids, skip_special_tokens=True)[0].strip()
         print('original generate function with constraint:', generated_text)
-        res2 = generated_text
+        res2 = generated_text"""
 
         #########################################################
-
+ 
         # special token id 모음
         period_id = [self.processor.tokenizer.convert_tokens_to_ids('.')]
         period_id.append(self.processor.tokenizer.convert_tokens_to_ids('Ġ.'))
@@ -84,7 +96,7 @@ class Runner:
                 return token_ids, True
             return [[list(map(tokenize2, clause)) for clause in ct] for ct in raw_cts]
         
-        constraints_list = [[[" pink"], [" cat"]]] # 앞에 띄어쓰기!
+        constraints_list = [[[" woman"]]] # 앞에 띄어쓰기!
         #constraints_list = [[[" game", " games"], [" league"], [" exciting", " exicted"]]]
         constraints_list = tokenize_constraints_chk(self.processor.tokenizer, constraints_list)
         #print(constraints_list)
@@ -98,9 +110,10 @@ class Runner:
         print('new generate function with constraint:', new_generated_text)
 
         res3 = new_generated_text
-        return res1, res2, res3
+
+        return res1, res3
 
 if __name__ == "__main__":
     fx = Runner()
     #import ipdb; ipdb.set_trace()
-    res1, res2, res3 = fx(image_path='./image/cat.jpg')
+    res1, res3 = fx(image_path='./image/28.jpg')

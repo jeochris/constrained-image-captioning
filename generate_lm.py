@@ -4,7 +4,7 @@ from typing import Optional
 import copy
 from transformers import GenerationConfig, LogitsProcessorList
 
-from new_beam_search import _generate_beam_search
+from constrained_beam_search import _generate_beam_search
 
 @torch.no_grad()
 def generate_lm(
